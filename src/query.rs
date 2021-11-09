@@ -1,4 +1,5 @@
-/// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
+use crate::status::Status;
 use notmuch_sys::{
     notmuch_exclude_t, notmuch_exclude_t_NOTMUCH_EXCLUDE_ALL,
     notmuch_exclude_t_NOTMUCH_EXCLUDE_FALSE, notmuch_exclude_t_NOTMUCH_EXCLUDE_FLAG,
@@ -15,12 +16,14 @@ impl Query {
     /// Add a tag that will be excluded from the query results by default.
     ///
     /// This exclusion will be ignored if this tag appears explicitly in the query.
-    pub fn add_tag_exclude(&self, tag: &str) {
-        // TODO(austin-ray): Add status return.
+    pub fn add_tag_exclude(&self, tag: &str) -> Result<(), Status> {
         let tag = CString::new(tag).unwrap();
 
-        unsafe {
-            notmuch_query_add_tag_exclude(self.query, tag.as_ptr());
+        let st = unsafe { notmuch_query_add_tag_exclude(self.query, tag.as_ptr()) }.into();
+
+        match st {
+            Status::Success => Ok(()),
+            _ => Err(st),
         }
     }
 

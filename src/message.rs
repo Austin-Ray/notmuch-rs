@@ -1,4 +1,4 @@
-use crate::tags::Tags;
+use crate::{status::Status, tags::Tags};
 use notmuch_sys::{
     notmuch_message_add_tag, notmuch_message_freeze, notmuch_message_get_tags,
     notmuch_message_remove_tag, notmuch_message_t, notmuch_message_thaw,
@@ -11,20 +11,24 @@ pub struct Message {
 
 impl Message {
     /// Add a given `tag` to the message.
-    pub fn add_tag(&self, tag: &str) {
-        // TODO(austin-ray): Add status return.
+    pub fn add_tag(&self, tag: &str) -> Result<(), Status> {
         let tag = CString::new(tag).unwrap();
 
-        unsafe {
-            notmuch_message_add_tag(self.msg, tag.as_ptr());
+        let st = unsafe { notmuch_message_add_tag(self.msg, tag.as_ptr()) }.into();
+
+        match st {
+            Status::Success => Ok(()),
+            _ => Err(st),
         }
     }
 
     /// Freeze the current state of `message` within the database.
-    pub fn freeze(&self) {
-        // TODO(austin-ray): Add status return.
-        unsafe {
-            notmuch_message_freeze(self.msg);
+    pub fn freeze(&self) -> Result<(), Status> {
+        let st = unsafe { notmuch_message_freeze(self.msg) }.into();
+
+        match st {
+            Status::Success => Ok(()),
+            _ => Err(st),
         }
     }
 
@@ -44,21 +48,25 @@ impl Message {
     }
 
     /// Remove a given `tag` from the message.
-    pub fn remove_tag(&self, tag: &str) {
-        // TODO(austin-ray): Add status return.
+    pub fn remove_tag(&self, tag: &str) -> Result<(), Status> {
         let tag = CString::new(tag).unwrap();
 
-        unsafe {
-            notmuch_message_remove_tag(self.msg, tag.as_ptr());
+        let st = unsafe { notmuch_message_remove_tag(self.msg, tag.as_ptr()) }.into();
+
+        match st {
+            Status::Success => Ok(()),
+            _ => Err(st),
         }
     }
 
     /// Thaw the current `message`, synchronizing any changes that may have occurred while
     /// `message` was frozen into the notmuch database.
-    pub fn thaw(&self) {
-        // TODO(austin-ray): Add status return.
-        unsafe {
-            notmuch_message_thaw(self.msg);
+    pub fn thaw(&self) -> Result<(), Status> {
+        let st = unsafe { notmuch_message_thaw(self.msg) }.into();
+
+        match st {
+            Status::Success => Ok(()),
+            _ => Err(st),
         }
     }
 }
