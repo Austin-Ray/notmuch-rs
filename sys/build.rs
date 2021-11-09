@@ -5,7 +5,7 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    println!("cargo:ruct-link-lib=notmuch");
+    println!("cargo:rustc-link-lib=notmuch");
     println!("cargo:rerun-if-changed=wrapper.h");
 
     let bindings = bindgen::Builder::default()
