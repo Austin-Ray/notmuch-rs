@@ -34,7 +34,6 @@ impl Iterator for Tags {
         }
         .to_str()
         .ok()?
-        .to_string()
         .to_string();
 
         unsafe { notmuch_tags_move_to_next(self.tags) }

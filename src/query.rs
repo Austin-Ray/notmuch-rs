@@ -85,13 +85,13 @@ pub enum Exclude {
     Flags,
 }
 
-impl Into<notmuch_exclude_t> for Exclude {
-    fn into(self) -> notmuch_exclude_t {
-        match self {
-            Self::All => notmuch_exclude_t_NOTMUCH_EXCLUDE_ALL,
-            Self::False => notmuch_exclude_t_NOTMUCH_EXCLUDE_FALSE,
-            Self::Flags => notmuch_exclude_t_NOTMUCH_EXCLUDE_FLAG,
-            Self::True => notmuch_exclude_t_NOTMUCH_EXCLUDE_TRUE,
+impl From<Exclude> for notmuch_exclude_t {
+    fn from(exclude: Exclude) -> Self {
+        match exclude {
+            Exclude::All => notmuch_exclude_t_NOTMUCH_EXCLUDE_ALL,
+            Exclude::False => notmuch_exclude_t_NOTMUCH_EXCLUDE_FALSE,
+            Exclude::Flags => notmuch_exclude_t_NOTMUCH_EXCLUDE_FLAG,
+            Exclude::True => notmuch_exclude_t_NOTMUCH_EXCLUDE_TRUE,
         }
     }
 }
