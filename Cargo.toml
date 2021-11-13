@@ -15,3 +15,8 @@ members = [
 
 [dependencies]
 notmuch-sys = { package = "sys", path = "./sys" }
+
+[dev-dependencies]
+lettre = { version = "0.10.0-rc.4", features = ["builder"] }
+maildir = "0.5"
+tempfile = "3"

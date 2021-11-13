@@ -94,7 +94,7 @@ impl From<*mut notmuch_message_t> for Message<'_> {
 ///
 /// # Example
 ///
-/// ```
+/// ```ignore
 /// let msgs = some_query.search_messages()?;
 ///
 /// for msg in msgs.into_inner() {

@@ -26,6 +26,7 @@ impl From<OpenMode> for notmuch_database_mode_t {
 }
 
 /// Notmuch database struct.
+#[derive(Debug, PartialEq)]
 pub struct Database {
     ptr: *mut notmuch_database_t,
 }
